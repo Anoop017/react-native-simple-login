@@ -1,45 +1,67 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useState } from 'react';
+import { View } from 'react-native';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import Login from './src/Login';
+import HomePage from './src/HomePage';
+import Details from './src/Details';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+
+type Page = 'login' | 'home' | 'details';
+
+const App = () => {
+
+  const [page, setPage] = useState<Page>('login')
+  const [userEmail, setUserEmail] = useState<string>('')
+  const [selectedItem, setSelectedItem] = useState<{ id: number; title: string; image: string } | null>(null);
+
+
+  const handleLogin = (email: string) => {
+    setUserEmail(email);
+    setPage('home');
+  };
+
+  const handleOpenDetails = (item: { id: number; title: string; image: string }) => {
+    setSelectedItem(item);
+    setPage('details');
+  };
+
+  const handleCloseDetails = () => {
+    setSelectedItem(null);
+    setPage('home');
+  };
+
+  const handleLogout = () => {
+    setUserEmail('');
+    setSelectedItem(null);
+    setPage('login');
+  };
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
+  <>
+  <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+    
+    {page === 'login' && (
+      <Login onLogin={handleLogin} />
+    )}
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
+    {page === 'home' && (
+      <HomePage
+        onLogin={handleOpenDetails}
+        onLogout={handleLogout}
       />
+    )}
+
+    {page === 'details' && selectedItem && (
+      <Details
+        item={selectedItem}
+        onClose={handleCloseDetails}
+      />
+    )}
     </View>
-  );
+  </>
+);
+
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
-export default App;
+export default App
