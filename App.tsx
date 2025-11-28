@@ -1,67 +1,45 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
+import React, {useState} from 'react'
+import {View, Text, Button, Pressable,StyleSheet } from 'react-native'
 
-import Login from './src/Login';
-import HomePage from './src/HomePage';
-import Details from './src/Details';
+const App = () =>{
+const [isOn, setIsOn] = useState(false)
 
+const toggle = () =>{
+  setIsOn(prev => !prev)
+}
 
-type Page = 'login' | 'home' | 'details';
+  return(
+    <View style={styles.container}>
+      <Text>
+        {isOn? "ON":"OFF"}
+      </Text>
 
-const App = () => {
+      <Pressable onPress={()=>toggle()} 
+        style={({pressed})=>[
+          {
+            backgroundColor:isOn? "lightgreen":"red",
+            paddingVertical:20,
+            paddingHorizontal:20,
+            borderRadius:8,
+            opacity:pressed? 0.6:1
+          }
+        ]}
+        >
+          <Text>{isOn? "Click to Turn off":"Click to Turn ON"}</Text>
 
-  const [page, setPage] = useState<Page>('login')
-  const [userEmail, setUserEmail] = useState<string>('')
-  const [selectedItem, setSelectedItem] = useState<{ id: number; title: string; image: string } | null>(null);
-
-
-  const handleLogin = (email: string) => {
-    setUserEmail(email);
-    setPage('home');
-  };
-
-  const handleOpenDetails = (item: { id: number; title: string; image: string }) => {
-    setSelectedItem(item);
-    setPage('details');
-  };
-
-  const handleCloseDetails = () => {
-    setSelectedItem(null);
-    setPage('home');
-  };
-
-  const handleLogout = () => {
-    setUserEmail('');
-    setSelectedItem(null);
-    setPage('login');
-  };
-
-  return (
-  <>
-  <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-    
-    {page === 'login' && (
-      <Login onLogin={handleLogin} />
-    )}
-
-    {page === 'home' && (
-      <HomePage
-        onLogin={handleOpenDetails}
-        onLogout={handleLogout}
-      />
-    )}
-
-    {page === 'details' && selectedItem && (
-      <Details
-        item={selectedItem}
-        onClose={handleCloseDetails}
-      />
-    )}
+      </Pressable>
     </View>
-  </>
-);
+
+  )
 
 }
 
-
+const styles = StyleSheet.create({
+  container:{
+    backgroundColor:"lightblue",
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center'
+  }
+})
 export default App
