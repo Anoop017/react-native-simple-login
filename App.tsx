@@ -1,33 +1,27 @@
-import React, {useState} from 'react'
-import {View, Text, Button, Pressable,StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, Button, Pressable, StyleSheet } from 'react-native'
+import CustomButton from './CustomButton'
 
-const App = () =>{
-const [isOn, setIsOn] = useState(false)
+const App = () => {
+  const [isOn, setIsOn] = useState(false)
 
-const toggle = () =>{
-  setIsOn(prev => !prev)
-}
+  const toggle = () => {
+    setIsOn(prev => !prev)
+  }
 
-  return(
+  return (
     <View style={styles.container}>
       <Text>
-        {isOn? "ON":"OFF"}
+        {isOn ? "ON" : "OFF"}
       </Text>
 
-      <Pressable onPress={()=>toggle()} 
-        style={({pressed})=>[
-          {
-            backgroundColor:isOn? "lightgreen":"red",
-            paddingVertical:20,
-            paddingHorizontal:20,
-            borderRadius:8,
-            opacity:pressed? 0.6:1
-          }
-        ]}
-        >
-          <Text>{isOn? "Click to Turn off":"Click to Turn ON"}</Text>
+      <CustomButton
+      title={isOn? "Turn Off":"Turn ON"}
+      onPress={toggle}
+      />
 
-      </Pressable>
+
+
     </View>
 
   )
@@ -35,11 +29,11 @@ const toggle = () =>{
 }
 
 const styles = StyleSheet.create({
-  container:{
-    backgroundColor:"lightblue",
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center'
+  container: {
+    backgroundColor: "lightblue",
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 export default App
