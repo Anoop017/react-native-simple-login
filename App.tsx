@@ -20,10 +20,11 @@ const App = () => {
       onPress={toggle}
       />
 
-
-
+      <CustomButton
+      title={'Reset'}
+      onPress={()=>setIsOn(false)}
+      />
     </View>
-
   )
 
 }
